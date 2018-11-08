@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      我的英语外教老师被骗 10000 RMB的惨痛经历
+title:      linux上安装jdk
 no-post-nav: true
 category: life
 tags: [life]
