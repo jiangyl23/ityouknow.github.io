@@ -4,10 +4,10 @@ title:      linux上安装jdk
 no-post-nav: true
 category: life
 tags: [life]
-excerpt: 轻信是人生之大敌
+excerpt: linux上详细安装
 ---
 
-![](http://www.ityouknow.com/assets/images/2018/life/insane.png)
+
 
 大家都知道作为一名程序员，学好英语是多么的重要，可以最快的速度去学习最权威的技术指南，可以在互联网上和全世界的技术人一起讨论问题。这也是我毕业这么多年一直没有放弃学习英语的重要原因之一。
 
