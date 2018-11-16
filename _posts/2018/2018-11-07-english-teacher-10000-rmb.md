@@ -1,61 +1,177 @@
 ---
 layout:     post
-title:      我的英语外教老师被骗 10000 RMB的惨痛经历
+title:      linux服务器安装MySQL-5.7
 no-post-nav: true
 category: life
 tags: [life]
-excerpt: 轻信是人生之大敌
+excerpt: mysql详细安装步骤
 ---
+1、下载tar包，这里使用wget从官网下载
+wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.22-linux-glibc2.12-x86_64.tar.gz
+2、将mysql安装到/usr/local/mysql下
 
-![](http://www.ityouknow.com/assets/images/2018/life/insane.png)
+# 解压
 
-大家都知道作为一名程序员，学好英语是多么的重要，可以最快的速度去学习最权威的技术指南，可以在互联网上和全世界的技术人一起讨论问题。这也是我毕业这么多年一直没有放弃学习英语的重要原因之一。
+tar -xvf mysql-5.7.22-linux-glibc2.12-x86_64.tar.gz
 
-这些年断断续续的尝试过背单词，读短小的英文小说，报名参加线下、线上的培训班，但至今英语仍然是烂的一滩糊涂，直到因为遇到了一些菲律宾的英语老师，经过半年多持续的视频对话，现在才勉强好了一点。
+# 移动
 
-我上课不喜欢按照大纲来学习嫌太枯燥，一般就喜欢找个英语老师 free talk ，尝试了几个英语老师之后，就找了一个可以聊得来的英语老师固定了下来，有一阵子没一阵子上着课，时间长了慢慢就有了一点信任感。
+mv mysql-5.7.22-linux-glibc2.12-x86_64 /usr/local/
 
-上课的形式就是大家约定个时间，在微信上以视频的方式去交流，每次上完课后将课时费发红包给老师，就这样愉快的合作了一段时间。突然有一天（9月6号）这个英语老师问我微信给她谈了一个框，她不知道是什么，想让我帮忙解释一下。
+# 重命名
 
-![](http://www.ityouknow.com/assets/images/2018/life/001.png)
+mv /usr/local/mysql-5.7.22-linux-glibc2.12-x86_64 /usr/local/mysql
 
-可能是微信最近收紧了微信支付限额政策，她不能通过转账将钱给别人。时间到了10月16号，这位老师突然问我有什么办法可以帮她把钱取出来，我确实帮不上忙。
+3、新建data目录
 
-![](http://www.ityouknow.com/assets/images/2018/life/002.png)
+mkdir /usr/local/mysql/data
 
-第二我正上班着，这名英语老师突然联系我，让我帮忙给她报警，吓了我一跳，不知道发生了什么？这个时候，她已经非常着急了，一边哭一边说这些钱不只是她的，还有一部分是其他老师的钱，如果她把这些钱搞丢了，这些人会杀了她。
+4、新建mysql用户、mysql用户组
 
-![](http://www.ityouknow.com/assets/images/2018/life/003.png)
+# mysql用户组
 
-菲律宾英语老师一节课的课时费只有几十块钱，这一万块钱相当于半年的课时费了。看着英语老师这么着急的情况下，我给拿了她钱的深圳哥们打了个电话，我说你要是拿了人家钱你赶紧还给人家算了，不然的话我会选择曝光这个事情。
+groupadd mysql
 
-这个哥们说，我也是上当受骗了，因为他不想帮这个英语老师的忙，但这个英语老师使劲让他帮忙，结果现在把自己的微信让腾讯也给封了，他也是受害者。他已经把这位英语老师给拉黑了，我说不管怎么样至少和这位英语老师联系一下吧，他说好的我后面会和她联系的。
+# mysql用户
 
-当我以为事情慢慢变得可以解决的时候，这个哥们将这个英语老师和另外一个英语老师都给拉黑了。我找这个英语老师将他俩的聊天记录截了图，大家看看这个哥们是不是说谎了，还是微信支付就是这个政策?
+useradd mysql -g mysql
 
-第一个微信聊天记录：
+5、将/usr/local/mysql的所有者及所属组改为mysql
 
-![](http://www.ityouknow.com/assets/images/2018/life/004.jpg)
+chown -R mysql.mysql /usr/local/mysql
 
-第二个微信聊天记录：
+6、初始化配置
+/usr/local/mysql/bin/mysqld --user=mysql --basedir=/usr/local/mysql/ --datadir=/usr/local/mysql/data --initialize
 
-![](http://www.ityouknow.com/assets/images/2018/life/005.jpg)
 
-转完钱后，他就把这个老师给拉黑了，另外一个英语老师也认识这个哥们，因为帮忙联系这个哥们让帮忙给解决问题，大家可以看看，通话内容很嚣张。
+# 如果出现以下错误：
 
-![](http://www.ityouknow.com/assets/images/2018/life/101.jpg)
-![](http://www.ityouknow.com/assets/images/2018/life/102.jpg)
-![](http://www.ityouknow.com/assets/images/2018/life/103.jpg)
-![](http://www.ityouknow.com/assets/images/2018/life/104.jpg)
-![](http://www.ityouknow.com/assets/images/2018/life/105.jpg)
 
-到现在为止，这个哥们仍然没有把钱退回给这位英语老师，并且将另外一个英语老师也给拉黑了。我有两个疑问：
+usr/local/mysql/bin/mysqld: error while loading shared libraries: libaio.so.1: cannot open shared object file: No such file or directory
 
-- 1、微信支付有这样的限额吗？
-- 2、这位哥们的行为有没有涉嫌诈骗？
+执行下面 
+yum install -y libaio
 
-就算他是出于帮忙的性质，也不应该直接收到钱，将别人直接拉黑吧？这件事情告诫大家，任何时候不要轻易的去相信别人，特别是网络上认识的人，这位英语老师确实有点傻大哈了，这个教训估计会记住一辈子。
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+Resolving Dependencies
+--> Running transaction check
+---> Package libaio.x86_64 0:0.3.109-13.el7 will be installed
+--> Finished Dependency Resolution
 
-奉劝那些想通过其它手段致富的朋友，赶紧收手吧，别老通过这种方式给国人丢脸，我都替你不好意思了。这篇文章我对当事人的敏感信息都进行了屏蔽，如果后期有必要也是可以选择曝光出来的，我会继续跟踪此事的进展，感兴趣可关注此公号跟踪。
+Dependencies Resolved
 
-![](http://www.ityouknow.com/assets/images/2018/life/flyever.jpg)
+================================================================================
+ Package         Arch            Version                    Repository     Size
+================================================================================
+Installing:
+ libaio          x86_64          0.3.109-13.el7             base           24 k
+
+Transaction Summary
+================================================================================
+Install  1 Package
+
+Total download size: 24 k
+Installed size: 38 k
+Downloading packages:
+libaio-0.3.109-13.el7.x86_64.rpm                           |  24 kB   00:00     
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : libaio-0.3.109-13.el7.x86_64                                 1/1 
+  Verifying  : libaio-0.3.109-13.el7.x86_64                                 1/1 
+
+Installed:
+  libaio.x86_64 0:0.3.109-13.el7                                                
+
+Complete!
+
+继续执行初始化配置
+usr/local/mysql/bin/mysqld --user=mysql --basedir=/usr/local/mysql/ --datadir=/usr/local/mysql/data --initialize
+
+2018-11-16T08:01:18.486398Z 0 [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation for more details).
+2018-11-16T08:01:19.587502Z 0 [Warning] InnoDB: New log files created, LSN=45790
+2018-11-16T08:01:19.712224Z 0 [Warning] InnoDB: Creating foreign key constraint system tables.
+2018-11-16T08:01:19.777256Z 0 [Warning] No existing UUID has been found, so we assume that this is the first time that this server has been started. Generating a new UUID: cd30ca9d-e975-11e8-92d0-00163e0ebdbe.
+2018-11-16T08:01:19.779704Z 0 [Warning] Gtid table is not ready to be used. Table 'mysql.gtid_executed' cannot be opened.
+2018-11-16T08:01:19.780244Z 1 [Note] A temporary password is generated for root@localhost: ,sa1fz1vTpB*
+
+初始化配置成功
+
+7、修改 etc/my.cnf配置
+
+用vi  vi etc/my.cnf按i输入修改
+
+datadir=/usr/local/mysql/data
+basedir=/usr/local/mysql
+socket=/tmp/mysql.sock
+user=mysql
+#端口
+port=3306 
+#编码格式
+character-set-server=utf8
+#取消密码验证
+skip-grant-tables
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+# Settings user and group are ignored when systemd is used.
+# If you need to run mysqld under a different user or group,
+# customize your systemd unit file for mariadb according to the
+# instructions in http://fedoraproject.org/wiki/Systemd
+
+[mysqld_safe]
+log-error=/var/log/mysqld.log
+pid-file=/var/run/mysqld/mysqld.pid
+
+#
+# include all files from the config directory
+#
+!includedir /etc/my.cnf.d
+
+修改完成 wq保存退出。
+
+
+8、开启服务
+
+# 将mysql加入服务
+
+cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysql
+
+# 开机自启
+
+chkconfig mysql on
+
+# 开启
+
+service mysql start
+
+9、设置密码
+
+# 登录（由于/etc/my.cnf中设置了取消密码验证，所以此处密码任意）
+
+/usr/local/mysql/bin/mysql -u root -p
+
+# 操作mysql数据库
+
+>>use mysql;
+
+# 修改密码
+
+>>update user set authentication_string=password('你的密码') where user='root';
+
+>>flush privileges;
+
+>>exit;
+
+10、将/etc/my.cnf中的skip-grant-tables删除
+
+11、登录再次设置密码（不知道为啥如果不再次设置密码就操作不了数据库了）
+
+/usr/local/mysql/bin/mysql -u root -p
+
+ >>ALTER USER 'root'@'localhost' IDENTIFIED BY '修改后的密码';
+
+>>exit;
+
+
